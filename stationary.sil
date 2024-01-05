@@ -1,0 +1,16 @@
+
+\begin{document}
+\use[module=packages.image]
+\use[module=packages.rules]
+
+\center{\img[src=image-bw.png, width=4cm]}
+
+Hello 123
+\font[size=1pt]%
+\hrulefill
+\skip[height=0mm]
+\hrulefill
+\vfill
+
+
+\end{document}
