@@ -2,15 +2,33 @@
 \begin{document}
 \use[module=packages.image]
 \use[module=packages.rules]
+\use[module=packages.svg]
 
-\center{\img[src=image-bw.png, width=4cm]}
+\nofolios
 
-Hello 123
-\font[size=1pt]%
-\hrulefill
-\skip[height=0mm]
-\hrulefill
+\center{\img[src=image-bw.png, width=5cm]}
+
+\skip[height=1cm]
+
+
+%\hrulefill
+%\skip[height=0mm]
+%\hrulefill
+
+\svg[src=svg2.svg]
+
+\font[size=2mm]
+
 \vfill
+
+Header image by Helvetica Blanc helveticablanc.com.
+
+Licensed under Creative Commons Attribution Noncommerical ShareAlike 4.0 international.  
+
+\goodbreak
+
+\svg[src=svg3.svg]
+
 
 
 \end{document}
