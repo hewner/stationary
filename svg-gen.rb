@@ -5,18 +5,29 @@ RubyUnits.configure do |config|
   config.separator = false
 end
 
-overall_height = Unit.new("6.5in")
-overall_width = Unit.new("6.5in")
-line_height = Unit.new("6mm")
-line_spacing = line_height * 0.5
-guide_angle = 52
-stroke = Unit.new("0.1pt")
+class Lines
 
-current_y = Unit.new("0mm")
-guide_angle_rads = 52 / 180.0 * Math::PI
-guide_angle_x = (line_height * 0.333 / Math.tan(guide_angle_rads)) * 1.0
+  attr_accessor :overall_height, :overall_width, :line_height, :line_spacing, :guide_angle, :stroke
 
-svg_template = %(<?xml version="1.0" standalone="no"?>
+  def initialize()
+
+    @overall_height = Unit.new("6.5in")
+    @overall_width = Unit.new("6.5in")
+    @line_height = Unit.new("6mm")
+    @line_spacing = @line_height * 0.5
+    @guide_angle = 52
+    @stroke = Unit.new("0.1pt")
+
+  end
+
+  def to_svg
+
+    guide_angle_rads = 52 / 180.0 * Math::PI
+    guide_angle_x = (@line_height * 0.333 / Math.tan(guide_angle_rads)) * 1.0
+    current_y = Unit.new("0mm")
+
+
+    svg_template = %(<?xml version="1.0" standalone="no"?>
 <svg width="6.5in" height="<%= overall_height %>" version="1.1" xmlns="http://www.w3.org/2000/svg">
 
   <%
@@ -49,5 +60,10 @@ svg_template = %(<?xml version="1.0" standalone="no"?>
 </svg>
 )
 
-renderer = ERB.new(svg_template)
-puts output = renderer.result(binding)
+    renderer = ERB.new(svg_template)
+    return renderer.result(binding)
+  end
+end
+
+lines = Lines.new
+puts lines.to_svg
