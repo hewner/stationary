@@ -18,6 +18,38 @@
 (define svg-footer (svg-tag "</svg>~n" 0))
 (define text (svg-tag "<text x=\"~a\" y=\"~a\" stroke=\"none\" font-size=\"x-large\" fill=\"green\">~a</text>~n" 3))
 
+(define atom? (compose not list?))
+
+(define flatten-parens
+  (lambda (datum)
+    (if (atom? datum) (list datum)
+        (append (list '*lparen*)
+                (apply append (map flatten-parens datum))
+                (list '*rparen*)))))
+
+(define transformer
+  (lambda (sym proc)
+    (letrec [(recur (lambda (datum)
+                      (cond [(atom? datum) datum]
+                            [(null? datum) datum]
+                            [(eqv? (car datum) sym)
+                             (apply proc (map recur (cdr datum)))]
+                            [else (map recur datum)])))]
+      recur)))
+
+(define insert-between
+  (lambda (value lst)
+    (if (or (null? lst) (null? (cdr lst)))
+        lst
+        (cons (car lst) (cons value (insert-between value (cdr lst)))))))
+
+(define cond-split
+  (transformer 'cond (lambda pairlist
+                        (cons 'cond (insert-between '*break* pairlist)))))
+                    
+                                   
+                      
+
 (with-output-to-file
   "recursive.svg"
   #:exists 'replace
