@@ -16,11 +16,11 @@ class LinesSvg
 
   def initialize()
 
-    @margins = Unit.new("1in")
+    @margins = Unit.new("0.5in")
     @overall_height = Unit.new("11in")
     @overall_width = Unit.new("8.5in")
-    @line_height = Unit.new("6mm")
-    @line_spacing = @line_height * 0.5
+    @line_height = Unit.new("4mm")
+    @line_spacing = @line_height
     @min_guide_height = @line_height * 0.33
     @diag_guide_height = @min_guide_height
     @diag_guide_spacing = Unit.new("1in")
