@@ -1,8 +1,10 @@
 #lang racket
 
+(require racket/trace)
+
 (define source '(define count-occurances
                   (lambda (val lst)
-                    (cond [(null? lst) 0]
+                    (cond [(null? lst) zero]
                           [(eqv? (car lst) val) (add1 (count-occurances val (cdr lst)))]
                           [else (count-occurances val (cdr lst))]))))
 
@@ -48,14 +50,29 @@
                         (cons 'cond (insert-between '*break* pairlist)))))
                     
                                    
-                      
+(define syg-width 13)
+(define syg-height 30)
+
+(define output-code
+  (lambda (datum x y)
+    (unless  (null? datum)
+      (case (car datum)
+        [(*break*) (output-code (cdr datum) x (+ y syg-height))]
+        [(*lparen*) (text x y "(")
+                    (output-code (cdr datum) (+ syg-width syg-width x) y)]
+        [(*rparen*) (text x y ")")
+                    (output-code (cdr datum) (+ syg-width syg-width x) y)]
+      
+        [else (let ((str (symbol->string (car datum))))
+                (text x y str)
+                (output-code (cdr datum) (+ x (* syg-width (add1 (string-length str)))) y))]))))
 
 (with-output-to-file
   "recursive.svg"
   #:exists 'replace
   (lambda ()
-    (svg-header 500 500)
+    (svg-header 5000 500)
     (rect 100 200 3 10)
-    (text 7 20 "hello world")
+    (output-code (flatten-parens (cond-split source))  7 20)
     (svg-footer)
     ))
